@@ -16,6 +16,8 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase.js"></script>
     
+
+
     <style>
 
         #robotNumber{
@@ -125,6 +127,8 @@
         
     </style>
 
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     
@@ -144,9 +148,9 @@
         <img src="images/Yahata.png" alt="Yahata - USA" height="35">
         
          </a>
-         <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-          </button> -->
+          </button>
          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
               <a class="nav-link active" aria-current="page" href="index.html">Robot Choice (beta)</a>
@@ -165,7 +169,7 @@
      <div class="row">
 
       <div class="col-md-6" style="padding-left: 20px;">
-        <h3 style="padding-top: 10px;"><strong>Active Robot Welders</strong> </h3>
+        <h3 style="padding-top: 10px;"><strong>Forklift / Orders</strong> </h3>
 
       </div>
       <div class="col-md-6" style="text-align: right; padding-right: 30px;" >
@@ -194,7 +198,7 @@
     </ul>
     <div class="tab-content" id="myTabContent">
       <!-- Tab for All Robots View -->
-      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
         <br>
         <div class="row alternateRow" id="row-1">
 
@@ -390,12 +394,107 @@
 
       </div>
       <!-- Tab for Orders View -->
-      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">I hope this works
+      <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">Current Orders
+        <br>
 
+        <!-- Create a pane for the orders as they come in -->
+        <div class="orderspane">
+
+
+          <!-- Card 1 -->
+        <div class="row">
+          <div class="card mb-6 order" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="Lathe/Lathe1.jpg" class="img-fluid rounded-start part" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <span>
+                    <h5 class="card-title">7J823-55073 <span class="dueDate">DUE DATE: 12.1.2022</span></h5>
+                  </span>
+                  
+                  <p class="card-text">Order Quantity: 450 <span></span></p>
+                  <p class="card-text">Quantity Per Day: 90 <span></span></p>
+                  <p class="card-text">Efficiency: 95%</p>
+                  <p class="card-text"><span class="updated">Last updated 5 min</span></span><span class="overdue">Behind</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-6 order" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="images/Parts/7J823-55073.jpg" class="img-fluid rounded-start part" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <span>
+                    <h5 class="card-title">7J823-55073 <span class="dueDate">DUE DATE: 12.1.2022</span></h5>
+                  </span>
+                  
+                  <p class="card-text">Order Quantity: 1500 <span></span></p>
+                  <p class="card-text">Quantity Per Day: 400 <span></span></p>
+                  <p class="card-text">Efficiency: 80%</p>
+                  <p class="card-text"><span class="updated">Last updated 5 min</span></span><span class="overdue">Overdue</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card mb-6 order" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="images/Parts/K3421-54133.PNG" class="img-fluid rounded-start part" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <span>
+                    <h5 class="card-title"> K3421-54133 <span class="dueDate">DUE DATE: 12.1.2022</span></h5>
+                  </span>
+                  
+                  <p class="card-text">Order Quantity:  160<span></span></p>
+                  <p class="card-text">Quantity Per Day: 160<span></span></p>
+                  <p class="card-text">Efficiency: 100%</p>
+                  <p class="card-text"><span class="updated">Last updated 5 min</span></span><span class="onTrack">On Track</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-6 order" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="images/Parts/K3811-44132.jpg" class="img-fluid rounded-start part" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <span>
+                    <h5 class="card-title"> K3811-44132 <span class="dueDate">DUE DATE: 12.1.2022</span></h5>
+                  </span>
+                  
+                  <p class="card-text">Order Quantity: 5500 <span></span></p>
+                  <p class="card-text">Quantity Per Day: 480 <span></span></p>
+                  <p class="card-text">Efficiency: 100%</p>
+                  <p class="card-text"><span class="updated">Last updated 5 min</span></span><span class="onTrack">On Track</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Card 2 -->
+        
+
+
+        </div>
+        
       </div>
-      <!-- Tab For invetory -->
-      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Work In progress</div>
+
     </div>
+          <!-- Tab For invetory -->
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Work In progress</div>
 
     <script>
       $(".nav li").on("click", function(){

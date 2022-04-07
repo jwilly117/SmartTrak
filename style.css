@@ -1,0 +1,38 @@
+.order{
+    width: 45vw;
+    padding: 15px;
+    float: left;
+    margin:10px;
+    background-color: rgb(108, 109, 117);
+    font-weight: bolder;
+}
+.part{
+    width: 600px;
+    height: auto;
+}
+.dueDate{
+    text-align: right;
+    float: right;
+    font-size: small;
+
+}
+.overdue{
+    text-align: right;
+    float: right;
+    font-size: larger;
+    font-weight: bold;
+    color: red;
+}
+.onTrack{
+    text-align: right;
+    float: right;
+    font-size: larger;
+    font-weight: bold;
+    color: rgb(0, 255, 47);
+}
+
+.updated{
+    color: rgb(127, 191, 246);
+    font-weight: lighter;
+    font-style: italic;
+}
