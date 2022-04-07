@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part-Track</title>
+
+    <!-- Jquery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+      <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase.js"></script>
+
+    
+    <style>
+        body{
+            background-color: grey;
+            color: rgb(231, 228, 228);
+        }
+        .container{
+            background-color: rgb(169, 176, 187);
+        }
+        .card{
+            /* margin:5px; */
+            border-width: 3px;
+        }
+        .navbar{
+            /* width: 110%; */
+        }
+        .btn-group{
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 40px;
+        }
+        .btn{
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            margin: 10px;
+            height: 60px;
+            padding-top: 15px;
+            background-color:rgb(20, 43, 173);
+            
+        }
+
+        #time,
+        #totalDowntime,
+        #totalRunTime{
+          font-size: 20px;
+          font-weight: bold;
+        }
+
+        #control,
+        #simulate,
+        #resume{
+            height:60px;
+        }
+        #changeoverButton{
+            margin-bottom:8px;
+        }
+        #partPic{
+            height: 145px;
+            
+            /* width: 95%; */
+            border-radius: 8px;
+        }
+        #dtreasons{
+            margin-top: 10px;
+            height: 50px;
+        }
+        .downTime{
+            width:110%;
+        }
+        #helpButton{
+            background-color: red;
+            height: 70px;
+            font-weight: bold;
+        }
+        #endpart{
+            background-color: red;
+        }
+        #dropdownMenuButton1{
+            background-color: grey;
+        }
+        .card{
+          border-radius: 10px;
+          float: left;
+        }
+        #cardA{
+          background-color: lightgreen;
+        }
+        #cardB{
+          background-color: salmon;
+        }
+        #card-name{
+          padding-top: 5px;
+          padding-left: 5px;
+        }
+        hr{
+          margin: 6px 0px;
+        }
+        #help{
+          background-color: red;
+          height: 60px;
+          font-size: larger;
+          font-weight: 500;
+          color:white;
+        }
+        #p11{
+          height: 300px;
+        }
+        #topish{
+          margin-bottom: 15px;
+        }
+        #p1,
+        #p2{
+          background-color:rgb(15, 33, 136);
+        }
+        .p3{
+          background-color: rgb(255, 81, 0);
+        }
+    </style>
+
+    <link rel="stylesheet" href="adminStyle.css">
+
+    <style>
+      #liveview{
+        background-color: rgb(4, 32, 56);
+      }
+    </style>
+
+</head>
+
+
+<body>
+    
+    <!--Nav -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+         <a class="navbar-brand" href="#">
+      <img src="../images/bluegear.png" alt="" width="35" height="29" class="d-inline-block align-top">
+      
+      Part Track -- 
+      <img src="../images/Yahata.png" alt="Yahata - USA" height="35">
+      
+       </a>
+       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="#">Operator Login</a>
+            <a class="nav-link" href="#">Start Day</a>
+            <a class="nav-link" href="#">Settings</a>
+            <a class="nav-link" href="../forklift.html">Material Operator</a>
+            <a class="nav-link" href="../index.html">Robot Test</a>
+            <a class="nav-link" href="adminPHP.php">PHP TEST</a>
+            
+
+
+
+
+          </div>
+        </div>
+      </div>
+   </nav>
+
+   <!-- columns -->
+   <div class="row">
+       <div class="col-md-2" id="sidebar">
+        <a class="btn btn-secondary sidebtn" href="admin.html" role="button">Daily Reports</a>
+        <a class="btn btn-secondary sidebtn" id="liveview" href="adminLiveView.html" role="button">Live View</a>
+        <a class="btn btn-secondary sidebtn" id="pbp" href="adminPBP.html" role="button">Part by Part</a>
+        <a class="btn btn-secondary sidebtn"  href="partdirectory.html" role="button">Part Directory</a>
+        <a class="btn btn-secondary sidebtn" href="downtime.html" role="button">Downtime Records</a>
+        <a class="btn btn-secondary sidebtn" href="" role="button">Edit Record (Null)</a>
+        <a class="btn btn-secondary sidebtn" href="" role="button">C/T Directory (Null)</a>
+        <a class="btn btn-secondary sidebtn" href="employeeDirectory.html" role="button">Employee Directory</a>
+        <a class="btn btn-secondary sidebtn" href="adminLabels.html" role="button">Label Directory</a>
+
+
+
+       </div>
+
+       
+       <div class="col-md-10">
+           <div class="row" id="navrow">
+
+            <div class="col-md-2">
+              <h2 id="panelTitle">Live View</h2>
+            </div>
+
+               <div class="col-md-2">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                      Actions
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                      <li><a class="dropdown-item active" href="#">Call Forklift</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Refresh</a></li>
+                    </ul>
+                  </div>
+               </div>
+               <div class="col-md-7" style="margin-top: 7px;">
+                   Below is a demonstrational live view from the admin panel of every robot / machine under the monitor, it updates with every part made on both basket counts,
+                   and percent to order completion. 
+                   <br>
+                    
+                    
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-md-12" id="outputBox">
+                   <!-- TABLE -->
+                <br>
+                   <div class="row" id="row-1">
+
+                    <!-- First column -->
+                    <div class="col-md-4">
+                       <div class="card" style="width: 11.5rem;">
+                           <h5 id="robotNumber">RW-1  Side A</h5>
+                           <img id="partPic" id="rw" src="../images/Parts/K3411-54133.png" class="card-img-top" alt="Side A Active Part">
+                            <h5>K3411-54133</h5>
+                           
+                         </div>
+                         <div class="card" style="width: 11.5rem;">
+                           <h5 id="robotNumber">RW-1  Side 2</h5>
+                           <img id="partPic" src="../images/Parts/K3411-81563.jpg" class="card-img-top" alt="...">
+                          <h5>K3411-81563</h5>
+                         </div>
+                    </div>
+                   <!-- Second Column -->
+
+
+        <div class="col-md-3">
+          <strong>Operator: James Franco</strong>
+          - - -Lorem ipsum dolor, sit amet consectetur adi         
+             <br><br>
+            <hr>
+            <strong>SIDE A Basket</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="R1SAProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>SIDE B Basket</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R1SBProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+
+        <div class="col-md-3">
+          <strong>Order Progress</strong>
+          <br>
+          <br>
+           <br>
+            <hr>
+            <strong>Order Progress</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p3" id="R1SAOrderProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>Order Progress</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2 p3" id="R1SBOrderProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+           
+                </div>
+
+                <!-- ROW 2 -->
+
+     <div class="row" >
+
+        <!-- First column -->
+        <div class="col-md-4">
+           <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-2 Side A</h5>
+               <img id="partPic" src="../images/Parts/K3071-21661.PNG" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+             <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-2 Side B</h5>
+               <img id="partPic" src="../images/Parts/K3411-53202.jpg" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+        </div>
+        <!-- Second Column -->
+        <div class="col-md-3">
+          <strong>Operator: Christian Bowman</strong>
+          - - -Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitaeam deleniti,  tempo.            <br>
+            <hr>
+            <strong>SIDE A Basket</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="R2SAProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>SIDE B Basket</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R2SBProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+
+        <div class="col-md-3">
+          <strong>Operator: Paige Bowman</strong>
+          - - -Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitaeam deleniti,  tempo.            <br>
+            <hr>
+            <strong>Order Progress</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p3" id="R2SAOrderProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>Order Progress</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2 p3" id="R2SBOrderProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+
+    </div>
+
+    <!-- ROW 3 -->
+
+    <div class="row" id="row-1">
+
+        <!-- First column -->
+        <div class="col-md-4">
+           <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-3 Side A</h5>
+               <img id="partPic" src="../images/Parts/K3411-54133.PNG" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+             <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-3 Side B</h5>
+               <img id="partPic" src="../images/Parts/K3411-81563.jpg" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+        </div>
+        <!-- Second Column -->
+        <div class="col-md-3">
+          <strong>Operator: Robert Sullivan</strong>
+          - - -Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitaeam deleniti,  tempo.            <br>
+            <hr>
+            <strong>SIDE A Basket</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="R3SAProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>SIDE B Basket</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R3SBProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+
+        <div class="col-md-3">
+          <strong>Operator: Robert Sullivan</strong>
+          - - -Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitaeam deleniti,  tempo.            <br>
+            <hr>
+            <strong>Order Progress</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p3" id="R3SAOrderProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>Order Progress</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2 p3" id="R3SBOrderProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+
+    </div>
+
+     <!-- ROW 4 -->
+
+     <div class="row">
+
+        <!-- First column -->
+        <div class="col-md-4">
+           <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-4 Side A</h5>
+               <img id="partPic" src="../images/Parts/K3421-54133.PNG" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+             <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-4 Side B</h5>
+               <img id="partPic" src="../images/Parts/K3811-44111.jpg" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+        </div>
+        <!-- Second Column -->
+        <div class="col-md-3">
+          <strong>Operator: Anne Hathaway</strong>
+          - - -Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitaeam deleniti,  tempo.            <br>
+            <hr>
+            <strong>SIDE A Basket</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="R4SAProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>SIDE B Basket</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R4SBProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+
+        <div class="col-md-3">
+          <strong>Operator: Anne Hathaway</strong>
+          - - -Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitaeam deleniti,  tempo.            <br>
+            <hr>
+            <strong>Order Progress</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p3" id="R4SAOrderProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>Order Progress</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated p2 p3" id="R4SBOrderProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+    </div>
+
+
+     <!-- ROW 5 -->
+
+     <div class="row" id="row-1">
+
+        <!-- First column -->
+        <div class="col-md-4">
+           <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-5 Side A</h5>
+               <img id="partPic" src="../images/Parts/K3811-44132.jpg" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+             <div class="card" style="width: 11.5rem;">
+               <h5 id="robotNumber">RW-5 Side B</h5>
+               <img id="partPic" src="../images/Parts/K5639-41411.PNG" class="card-img-top" alt="...">
+
+               <br>
+             </div>
+        </div>
+        <!-- Second Column -->
+        <div class="col-md-6">
+          <strong>Operator: ShoGo</strong>
+          - - This is a nonfunctional Placeholder for the potential 5th Robot     <br>
+            <hr>
+            <strong>SIDE A</strong>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 93%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <br>
+              <strong>SIDE B</strong>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated"  role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+        </div>
+
+    </div>
+
+               </div>
+
+               
+           </div>
+
+           
+       </div>
+   </div>
+
+<!-- <script src="adminApp.js"></script> -->
+
+<script>
+
+  // I guess lets go ahead and put in the firebase for this crap
+
+  // Firebase Config
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyCNgQru6L-VJT5C9y8Cl47GtVH2DNmo2Yk",
+    authDomain: "part-track-demo.firebaseapp.com",
+    projectId: "part-track-demo",
+    storageBucket: "part-track-demo.appspot.com",
+    messagingSenderId: "497244549101",
+    appId: "1:497244549101:web:afb5f178b7f25ff2dc81e4"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+//  ===================================================================
+// Here we capture the counters
+var database = firebase.database();
+
+//Everything Else
+// ========================================================
+  var R1SA = 0;
+  var R1SB = 0; 
+
+  var R2SA = 0;
+  var R2SB = 0;
+
+  var R3SA = 0;
+  var R3SB = 0;
+
+  var R4SA = 0;
+  var R4SB = 0;
+
+  // Robot 1
+
+  database.ref("R1/basketA").on("value", function(snap){
+    console.log(snap.val());
+    R1SA = snap.val();
+    console.log("The side A basket Count is " + R1SA)
+
+    $("#R1SAProgress").css("width", (R1SA + "%"));
+  })
+
+  database.ref("R1/basketB").on("value", function(snap){
+    console.log(snap.val());
+    R1SB = snap.val();
+    console.log("The side A Basket Count is " + R1SB);
+
+    $("#R1SBProgress").css("width", ((R1SB * 2) + "%"));
+  })
+
+  // Robot 2
+
+  database.ref("R2/R2basketA").on("value", function(snap){
+    console.log(snap.val());
+    R2SA = snap.val();
+    console.log("The side A Basket Count is " + R2SA);
+
+    $("#R2SAProgress").css("width", (R2SA + "%"));
+  })
+
+  database.ref("R2/R2basketB").on("value", function(snap){
+    console.log(snap.val());
+    R2SB = snap.val();
+    console.log("The side A Basket Count is " + R2SB);
+
+    $("#R2SBProgress").css("width", ((R2SB * 2) + "%"));
+  })
+
+  // Robot 3 ===============================================
+
+  database.ref("R3/R3basketA").on("value", function(snap){
+    console.log(snap.val());
+    R3SA = snap.val();
+    console.log("The side A Basket Count is " + R2SA);
+
+    $("#R3SAProgress").css("width", ((R3SA * 3) + "%"));
+  })
+
+  database.ref("R3/R3basketB").on("value", function(snap){
+    console.log(snap.val());
+    R3SB = snap.val();
+    console.log("The side B Basket Count is " + R2SB);
+
+    $("#R3SBProgress").css("width", ((R3SB) + "%"));
+  })
+
+  // Robot 4 ===============================================
+
+  database.ref("R4/R4basketA").on("value", function(snap){
+    console.log(snap.val());
+    R4SA = snap.val();
+    console.log("The side A Basket Count is " + R4SA);
+
+    $("#R4SAProgress").css("width", ((R4SA * 3) + "%"));
+  })
+
+  database.ref("R4/R4basketB").on("value", function(snap){
+    console.log(snap.val());
+    R4SB = snap.val();
+    console.log("The side B Basket Count is " + R4SB);
+
+    $("#R4SBProgress").css("width", ((R4SB) + "%"));
+  })
+
+</script>
+
+</body>
+</html>

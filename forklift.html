@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part-Track -Material Op</title>
+
+    <!-- Jquery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase.js"></script>
+    
+    <style>
+
+        #robotNumber{
+            margin-left: 5px;
+        }
+        body{
+            background-color: grey;
+        }
+        .container{
+            background-color: rgb(66, 143, 243);
+        }
+        .card{
+            /* margin:5px; */
+            border-width: 3px;
+        }
+        .navbar{
+            /* width: 110%; */
+        }
+        .btn-group{
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 40px;
+        }
+        .btn{
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            background-color:rgb(38, 65, 219);
+            
+        }
+
+        #control{
+            height:60px;
+        }
+        #changeoverButton{
+            margin-bottom:8px;
+        }
+        #partPic{
+            height: 130px;
+            width: 142px;
+            border-radius: 8px;
+            margin-left: 2px;
+            /* width: 95%; */
+        }
+        #dtreasons{
+            margin-top: 10px;
+            height: 50px;
+        }
+        .downTime{
+            width:110%;
+        }
+        #helpButton{
+            background-color: red;
+            height: 70px;
+            font-weight: bold;
+        }
+        #endpart{
+            background-color: red;
+        }
+        #dropdownMenuButton1{
+            background-color: grey;
+        }
+        .card{
+          border-radius: 10px;
+          width: 200px;
+          float: left;
+          background-color: rgb(131, 143, 179);
+          margin-left: 5px;
+          color: white;
+        }
+        .row{
+            margin-bottom: 5px;
+        }
+        img{
+          border-radius: 8px;
+        }
+        .progress-bar2{
+            background: rgb(250, 99, 11);
+        }
+        #row-1{
+        }
+        .alternateRow{
+          background-color: rgb(161, 161, 161);
+
+        }
+        .progress-bar2,
+        .progress-bar{
+            height: 300px;
+        }
+        .progress{
+            height: 23px;
+        }
+        hr{
+            margin: 8px;
+        }
+        .p2,
+        #p2{
+            background-color: rgb(248, 88, 88);
+        }
+        #remaining{
+          margin-left: 5px;
+        }
+        .altRow{
+          background-color: rgb(24, 131, 131);
+        }
+        
+    </style>
+
+</head>
+<body>
+    
+    <!-- Create a simple header, and a counter with a pause button -->
+
+    
+    
+    <div class="container">
+
+        <!--Nav -->
+        <nav class="navbar navbar-dark bg-dark" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+          <div class="container-fluid">
+           <a class="navbar-brand" href="#">
+        <img src="SmartTrak Pics/LogoDL.JPG"  alt="" width="200" height="43" class="d-inline-block align-top">
+
+        -
+        <img src="images/Yahata.png" alt="Yahata - USA" height="35">
+        
+         </a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="index.html">Robot Choice (beta)</a>
+              <!-- <a class="nav-link" href="#">Start Day</a>
+              <a class="nav-link" href="#">Settings</a>
+              <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">End Day</a>
+              <a class="nav-link" href="tester.html">Admin</a> -->
+              <!-- <a class="nav-link" href="index.html">Robot Operator</a> -->
+
+
+            </div>
+          </div>
+        </div>
+     </nav>
+     
+     <div class="row">
+
+      <div class="col-md-6" style="padding-left: 20px;">
+        <h3 style="padding-top: 10px;"><strong>Forklift / Orders</strong> </h3>
+
+      </div>
+      <div class="col-md-6" style="text-align: right; padding-right: 30px;" >
+        <h5>Robots Online: <span id="robotsOnline"></span></h5>
+
+      </div>
+     </div>
+     <!-- <h3>Material Operator View</h3>
+     <h5>Robots Online: <span id="robotsOnline"></span></h5> -->
+     <hr>
+
+
+     <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Robots
+          <span class="badge bg-danger" style="color: white;">Alert!</span>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Orders 
+          <span class="badge bg-primary" style="color: white;">New</span>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Inventory (WIP)</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <!-- Tab for All Robots View -->
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <br>
+        <div class="row alternateRow" id="row-1">
+
+          <!-- First column -->
+          <div class="col-md-6">
+             <div class="card" style="width: 9.5rem;">
+                 <h5 id="robotNumber">RW-1  Side 1</h5>
+                 <img id="partPic" id="rw" src="images/Parts/K3411-54133.PNG" class="card-img-top" alt="...">
+ 
+                 <br>
+               </div>
+               <div class="card" style="width: 9.5rem;">
+                 <h5 id="robotNumber">RW-1  Side 2</h5>
+                 <img id="partPic" src="images/Parts/K3411-81563.jpg" class="card-img-top" alt="...">
+ 
+                 <br>
+               </div>
+          </div>
+          <!-- Second Column -->
+          <div class="col-md-6">
+           <strong>Operator: James Franco</strong>
+           - - - Lorem ipsum dolor, sit amet conseione odio  <br>
+             <hr>
+             <strong>SIDE A - K3411-54133</strong>
+             <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated"  id="R1SAProgress" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                 <div id="remaining"></div>
+ 
+               </div>
+               <br>
+               <strong>SIDE B - K3411-81563</strong>
+               <div class="progress">
+                
+                 <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R1SBProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                 <div id="remaining"></div>
+               </div>
+         </div>
+ 
+      </div>
+ 
+      <!-- ROW 2 -->
+ 
+      <div class="row" id="row-2">
+ 
+         <!-- First column -->
+         <div class="col-md-6">
+            <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-2 Side A</h5>
+                <img id="partPic" src="images/Parts/7J282-55054.jpg" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+              <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-2 Side B</h5>
+                <img id="partPic" src="images/Parts/7J285-57553.jpg" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+         </div>
+         <!-- Second Column -->
+         <div class="col-md-6">
+             <strong>Operator: Christian Bowman</strong>
+             - - - Lorem ipsum dolor, sit amet conseio
+             <br>
+             <hr>
+             <!-- Side A -->
+             <strong>SIDE A - 7J282-55054</strong>
+             <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="R2SAProgress" role="progressbar" style="width: 91%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="background: red;"></div>
+                 <!-- <div id="remaining"><h5>  10/12 </h5></div> -->
+ 
+               </div>
+               <br>
+               <strong>SIDE B - 7J285-57553</strong>
+               <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R2SBProgress" role="progressbar" style="width: 44%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+         </div>
+ 
+     </div>
+ 
+     <!-- ROW 3 -->
+ 
+     <div class="row alternateRow" id="row-3">
+ 
+         <!-- First column -->
+         <div class="col-md-6">
+            <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-3 Side A</h5>
+                <img id="partPic" src="images/Parts/K3071-02162.jpg" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+              <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-3 Side B</h5>
+                <img id="partPic" src="images/Parts/7J823-55073.jpg" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+         </div>
+         <!-- Second Column -->
+         <div class="col-md-6">
+           <strong>Operator: Robert Sullivan</strong>
+           - - - Lorem ipsum dolor, sit amet conone oulpa  <br>
+             <hr>
+             <strong>SIDE A - K3071-02162</strong>
+             <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="R3SAProgress" role="progressbar" style="width:49%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+               <br>
+               <strong>SIDE B - 7J823-55073</strong>
+               <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R3SBProgress" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+         </div>
+ 
+     </div>
+ 
+      <!-- ROW 4 -->
+ 
+      <div class="row" id="row-4">
+ 
+         <!-- First column -->
+         <div class="col-md-6">
+            <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-4 Side A</h5>
+                <img id="partPic" src="images/Parts/K5639-41411.PNG" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+              <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-4 Side B</h5>
+                <img id="partPic" src="images/Parts/K3071-21661.PNG" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+         </div>
+         <!-- Second Column -->
+         <div class="col-md-6">
+           <strong>Operator: Anne Hathoway</strong>
+           - - - Lorem ipsum dolor, sit amet  odio culpa   <br>
+             <hr>
+             <strong>SIDE A - K5639-41411</strong>
+             <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="R4SAProgress" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+               <br>
+               <strong>SIDE B - K3071-21661</strong>
+               <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated p2" id="R4SBProgress" role="progressbar" style="width: 19%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+         </div>
+ 
+     </div>
+ 
+ 
+      <!-- ROW 5 -->
+ 
+      <div class="row alternateRow" id="row-5">
+ 
+         <!-- First column -->
+         <div class="col-md-6">
+            <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-5 Side A</h5>
+                <img id="partPic" src="images/Parts/K3811-44132.jpg" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+              <div class="card" style="width: 9.5rem;">
+                <h5 id="robotNumber">RW-5 Side B</h5>
+                <img id="partPic" src="images/Parts/K5639-41411.PNG" class="card-img-top" alt="...">
+ 
+                <br>
+              </div>
+         </div>
+         <!-- Second Column -->
+         <div class="col-md-6">
+           <strong>Operator: Shogo</strong>
+           - -Placeholder area for a future Robot, not yet available for reference<br>
+             <hr>
+             <strong>SIDE A</strong>
+             <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 93%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+               <br>
+               <strong>SIDE B</strong>
+               <div class="progress">
+                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="p2" role="progressbar" style="width: 73%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+         </div>
+ 
+     </div>
+
+      </div>
+      <!-- Tab for Orders View -->
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">I hope this works
+
+      </div>
+      <!-- Tab For invetory -->
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Work In progress</div>
+    </div>
+
+    <script>
+      $(".nav li").on("click", function(){
+        $(".nav li").removeClass("active");
+        $(this).addClass("active");
+      })
+    </script>
+
+
+    <!-- GO LOOK UP HOW TO USE TABS ON YOUTUBE -->
+
+     <!-- Separate into Rows and Columns -->
+     <!-- ROW 1 -->
+
+
+<br>
+
+
+
+<script>
+  //  Here we have the javascript test for a decreasing progress bar
+    // ================================
+
+    var firebaseConfig = {
+    apiKey: "AIzaSyCNgQru6L-VJT5C9y8Cl47GtVH2DNmo2Yk",
+    authDomain: "part-track-demo.firebaseapp.com",
+    projectId: "part-track-demo",
+    storageBucket: "part-track-demo.appspot.com",
+    messagingSenderId: "497244549101",
+    appId: "1:497244549101:web:afb5f178b7f25ff2dc81e4"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+//  ===================================================================
+// Here we capture the counters
+var database = firebase.database();
+
+// ===========================================================================
+// CONNECTIONS PART
+// ===========================================================================
+
+// ConnectionsRef to reference all the connections. 
+var connectionsRef = database.ref("/connections");
+
+// .info connected is a special location updatad when 
+// any clients connection boolean changes.
+var connectedRef = database.ref(".info/connected");
+
+// When the client connection state changes
+// connectedRef.on("value", function(snap){
+
+//     // if they connect
+//     if(snap.val()){
+//         // add user to the connection list
+//         var con = connectionsRef.push(true);
+
+//         // and remove them when they disconnect()
+//         con.onDisconnect().remove();
+//     }
+// });
+
+// page first loads or when the con list changes
+connectionsRef.on("value",function(snap){
+
+    // display viewercount in the html
+    $("#robotsOnline").text(snap.numChildren());
+});
+
+// ===========================================================================
+// CONNECTIONS PART
+// ===========================================================================
+
+
+
+  var R1SA = 0;
+  var R1SB = 0; 
+
+  var R2SA = 0;
+  var R2SB = 0;
+
+  var R3SA = 0;
+  var R3SB = 0;
+
+  var R4SA = 0;
+  var R4SB = 0;
+
+  // Robot 1 ===============================================
+
+  database.ref("R1/basketA").on("value", function(snap){
+    console.log(snap.val());
+    R1SA = snap.val();
+    console.log("The side A basket Count is " + R1SA)
+
+    $("#R1SAProgress").css("width", (R1SA + "%"));
+  })
+
+  database.ref("R1/basketB").on("value", function(snap){
+    console.log(snap.val());
+    R1SB = snap.val();
+    console.log("The side A Basket Count is " + R1SB);
+
+    $("#R1SBProgress").css("width", ((R1SB * 1.6) + "%"));
+  })
+
+  // Robot 2 ===============================================
+
+  database.ref("R2/R2basketA").on("value", function(snap){
+    console.log(snap.val());
+    R2SA = snap.val();
+    console.log("The side A Basket Count is " + R2SA);
+
+    $("#R2SAProgress").css("width", (R2SA + "%"));
+  })
+
+  database.ref("R2/R2basketB").on("value", function(snap){
+    console.log(snap.val());
+    R2SB = snap.val();
+    console.log("The side A Basket Count is " + R2SB);
+
+    $("#R2SBProgress").css("width", ((R2SB * 2) + "%"));
+  })
+
+  // Robot 3 ===============================================
+
+  database.ref("R3/R3basketA").on("value", function(snap){
+    console.log(snap.val());
+    R3SA = snap.val();
+    console.log("The side A Basket Count is " + R2SA);
+
+    $("#R3SAProgress").css("width", ((R3SA * 3) + "%"));
+  })
+
+  database.ref("R3/R3basketB").on("value", function(snap){
+    console.log(snap.val());
+    R3SB = snap.val();
+    console.log("The side B Basket Count is " + R2SB);
+
+    $("#R3SBProgress").css("width", ((R3SB) + "%"));
+  })
+
+  // Robot 4 ===============================================
+
+  database.ref("R4/R4basketA").on("value", function(snap){
+    console.log(snap.val());
+    R4SA = snap.val();
+    console.log("The side A Basket Count is " + R4SA);
+
+    $("#R4SAProgress").css("width", ((R4SA * 1.5) + "%"));
+  })
+
+  database.ref("R4/R4basketB").on("value", function(snap){
+    console.log(snap.val());
+    R4SB = snap.val();
+    console.log("The side B Basket Count is " + R4SB);
+
+    $("#R4SBProgress").css("width", ((R4SB) + "%"));
+  })
+
+
+
+  //  ===================================================================
+  // Help Buttons
+  //  ===================================================================
+
+  database.ref("help/R3/R3needsHelp").on("value", function(snap){
+    console.log("Robot 3 needs help: " + snap.val());
+    if(snap.val() == true){
+      console.log("Robot 3 Needs Help");
+      // alert("Robot 1 Needs help");
+      $("#row-3").css('background-color', 'salmon');
+    }
+    else {
+      console.log("Robot 3 Does not need help");
+      $("#row-3").css('background-color', 'rgb(161, 161, 161)');
+
+    }
+  })
+
+  database.ref("help/R1/R1needsHelp").on("value", function(snap){
+    console.log("Robot 1 needs help: " + snap.val());
+    if(snap.val() == true){
+      console.log("Robot 1 Needs Help");
+      // alert("Robot 1 Needs help");
+      $("#row-1").css('background-color', 'salmon');
+    }
+    else {
+      console.log("Robot 1 Does not need help");
+      $("#row-1").css('background-color', 'rgb(161, 161, 161)');
+
+    }
+  })
+
+  database.ref("help/R2/R2needsHelp").on("value", function(snap){
+    console.log("Robot 2 needs help: " + snap.val());
+    if(snap.val() == true){
+      console.log("Robot 2 Needs Help");
+      // alert("Robot 1 Needs help");
+      $("#row-2").css('background-color', 'salmon');
+    }
+    else {
+      console.log("Robot 2 Does not need help");
+      $("#row-2").css('background-color', 'rgb(131, 176, 236)');
+
+    }
+  })
+
+  database.ref("help/R4/R4needsHelp").on("value", function(snap){
+    console.log("Robot 4 needs help: " + snap.val());
+    if(snap.val() == true){
+      console.log("Robot 4 Needs Help");
+      // alert("Robot 1 Needs help");
+      $("#row-4").css('background-color', 'salmon');
+    }
+    else {
+      console.log("Robot 4 Does not need help");
+      $("#row-4").css('background-color', 'rgb(131, 176, 236)');
+
+    }
+  })
+
+
+
+
+
+  // Robot 5 ===============================================
+
+  // Placeholder
+
+
+
+
+</script>
+
+
+    
+<script src="robots/robotsapp.js"></script>
+<script src="databaseRead.js"></script>
+</body>
+</html>

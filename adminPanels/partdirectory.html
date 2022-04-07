@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part-Directory</title>
+
+    <!-- Jquery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase.js"></script>
+
+    
+    <style>
+        #allMachines{
+          color: white;
+        }
+        body{
+            background-color: grey;
+        }
+        .container{
+            background-color: rgb(169, 176, 187);
+        }
+        .card{
+            /* margin:5px; */
+            border-width: 3px;
+        }
+        .navbar{
+            /* width: 110%; */
+        }
+        .btn-group{
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 40px;
+        }
+        .btn{
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            /* margin: 10px; */
+            height: 60px;
+            padding-top: 15px;
+            background-color:rgb(20, 43, 173);
+            
+        }
+        .btn-group{
+          padding-top: 35px;
+          margin-left: 0px;
+          margin-right: 0px;
+        }
+        #time,
+        #totalDowntime,
+        #totalRunTime{
+          font-size: 20px;
+          font-weight: bold;
+        }
+        .sidebtn{
+          margin:10px;
+        }
+        #control,
+        #simulate,
+        #resume{
+            height:60px;
+        }
+        #changeoverButton{
+            margin-bottom:8px;
+        }
+        #partPic{
+            height: 245px;
+            /* width: 95%; */
+            border-radius: 8px;
+        }
+        #dtreasons{
+            margin-top: 10px;
+            height: 50px;
+        }
+        .downTime{
+            width:110%;
+        }
+        #helpButton{
+            background-color: red;
+            height: 70px;
+            font-weight: bold;
+        }
+        #endpart{
+            background-color: red;
+        }
+        #dropdownMenuButton1{
+            background-color: grey;
+        }
+        .card{
+          border-radius: 10px;
+        }
+        #cardA{
+          background-color: lightgreen;
+        }
+        #cardB{
+          background-color: salmon;
+        }
+        #card-name{
+          padding-top: 5px;
+          padding-left: 5px;
+        }
+        hr{
+          margin: 6px 0px;
+        }
+        #help{
+          background-color: red;
+          height: 60px;
+          font-size: larger;
+          font-weight: 500;
+          color:white;
+        }
+        #p11{
+          height: 300px;
+        }
+        #topish{
+          margin-bottom: 15px;
+        }
+        #p1,
+        #p2{
+          background-color:rgb(15, 33, 136);
+        }
+        .btn2{
+          background-color: rgb(7, 46, 83);
+        }
+        #clickForCSV{
+          margin: 15px;
+        }
+        .card,
+        .card-body{
+          width: 275px;
+        }
+        
+    </style>
+
+    <link rel="stylesheet" href="adminStyle.css">
+
+
+    <style>
+      #pbp{
+        background-color: rgb(4, 32, 56);
+      }
+      #outputBox{
+      background-color: rgb(34, 34, 34);
+      height: 1445px;
+      }
+
+      
+    </style>
+
+    <style>
+        .card{
+          width: 16rem;
+        }
+        .card-body{
+          width: 275px;
+        }
+        .card-img-top{
+          width: 260px;
+          margin: auto;
+        }
+    </style>
+
+</head>
+
+
+<body>
+    
+    <!--Nav -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+         <a class="navbar-brand" href="#">
+      <img src="../images/bluegear.png" alt="" width="35" height="29" class="d-inline-block align-top">
+      
+      Part Track -- 
+      <img src="../images/Yahata.png" alt="Yahata - USA" height="35">
+      
+       </a>
+       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="../index.html">Operator Login</a>
+            <!-- <a class="nav-link" href="#">Start Day</a> -->
+            <a class="nav-link" href="#">Settings</a>
+            <!-- <a class="nav-link" href="../index.html" tabindex="-1" aria-disabled="true">End Day</a> -->
+            <!-- <a class="nav-link" href="tester.html">Admin</a> -->
+            <a class="nav-link" href="../forklift.html">Material Operator</a>
+            <a class="nav-link" href="../index.html">Robot Test</a>
+            <a class="nav-link" href="adminPHP.php">PHP TEST</a>
+
+
+
+
+          </div>
+        </div>
+      </div>
+   </nav>
+
+   <!-- columns -->
+   <div class="row">
+       <div class="col-md-2" id="sidebar">
+        <a class="btn btn-secondary sidebtn" href="admin.html" role="button">Daily Reports</a>
+        <a class="btn btn-secondary sidebtn" href="adminLiveView.html" role="button">Live View</a>
+        <a class="btn btn-secondary sidebtn" href="adminPBP.html" role="button">Part by Part</a>
+        <a class="btn btn-secondary sidebtn" id="active" href="partdirectory.html" role="button">Part Directory</a>
+        <a class="btn btn-secondary sidebtn" href="downtime.html" role="button">Downtime Records</a>
+        <a class="btn btn-secondary sidebtn" href="" role="button">Edit Record (Null)</a>
+        <a class="btn btn-secondary sidebtn" href="" role="button">C/T Directory (Null)</a>
+        <a class="btn btn-secondary sidebtn" href="employeeDirectory.html" role="button">Employee Directory</a>
+        <a class="btn btn-secondary sidebtn" href="adminLabels.html" role="button">Label Directory</a>
+
+       </div>
+
+       <div class="col-md-10">
+
+        <!-- This will be the top bar -->
+        <div class="row" id="navrow">
+
+          <div class="col-md-2">
+            <h2 id="panelTitle">Part Directory</h2>
+          </div>
+
+          <div class="col-md-2">
+
+            <a class="btn btn-secondary sidebtn" style="float: left;" id="allMachines" role="button">All Parts</a>
+
+          </div>
+          <div class="col-md-7" id="centerish" style="float: left;">
+
+              <!-- Here we will have the button groups -->
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary" id="r1">Welding</button>
+                <button type="button" class="btn btn-primary" id="r2">Hand Weld</button>
+                <button type="button" class="btn btn-primary" id="r3">Press</button>
+                <button type="button" class="btn btn-primary" id="r4">Other</button>
+              </div>
+
+          </div>
+          <div class="col-md-1">
+
+          </div>
+
+          <!-- This is the output box -->
+        </div>
+           <div class="row">
+               <div class="col-md-12" id="outputBox" style="padding: 20px;">
+
+                  <!-- Input new part Row -->
+
+
+                  <!-- Form for inputing new part information into the firebase database -->
+
+                  <div class="row">
+                    <div class="col-md-9 partinput">
+                      <h2>Input new Part Information</h2>
+
+                      <div class="mb-3">
+
+                        <label for="formGroupExampleInput" class="form-label">Part Number / Name</label>
+
+                        <!-- Row 1 -->
+                        <div class="row">
+                          <div class="col">
+                            <input type="text" id="partNumber" class="form-control" placeholder="Finished Part Number" aria-label="First name">
+                          </div>
+                          
+                          <div class="col">
+                            <input type="text" id="partName" class="form-control" placeholder="Part Name" aria-label="Last name">
+                          </div>
+
+                        </div> 
+
+                        <!-- Row 2 -->
+
+                      </div>
+                      <label for="formGroupExampleInput" class="form-label">Other Part Information / Cycle Times</label>
+
+
+                      <div class="row">
+                        
+                        <div class="col">
+                          <input type="text" id="SNP" class="form-control" placeholder="SNP" aria-label="First name">
+                        </div>
+                        <div class="col">
+                          <input type="text" id="container" class="form-control" placeholder="Container / SMP" aria-label="First name">
+                        </div>
+                        <div class="col">
+                          <input type="text" id="cycleTime" class="form-control" placeholder="Cycle Time Total" aria-label="First name">
+                        </div>
+                      </div>
+
+                      <!-- <label for="formGroupExampleInput" class="form-label">Other Part Information / Cycle Times</label> -->
+                      <br>
+
+                      <div class="row">
+                        
+                        <div class="col">
+                          <input type="text" id="quantityPerCycle" class="form-control" placeholder="Quantity Per Cycle" aria-label="First name">
+                        </div>
+                        <div class="col">
+                          <input type="text" id="machineTime" class="form-control" placeholder="Machine / Weld Time" aria-label="First name">
+                        </div>
+                        <div class="col">
+                          <input type="text" id="loadTime" class="form-control" placeholder="Load + Unload Time" aria-label="First name">
+                        </div>
+                      </div>
+                      <br>
+
+                      
+
+                     
+
+                    </div>
+
+
+                    <!-- Radio buttons for choosing type of Part, such as hand weld, robotic weld, press, other -->
+
+                    <div class="col-md-2 partinput">
+                       <!-- Radios -->
+                       <fieldset class="row mb-3">
+                        <legend class="col-form-label col-sm-2 pt-0">Choose Type</legend>
+                        <div class="col-sm-10">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+                            <label class="form-check-label" for="gridRadios1">
+                              Robot Weld
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                            <label class="form-check-label" for="gridRadios2">
+                              Hand Weld
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" >
+                            <label class="form-check-label" for="gridRadios3">
+                              Press
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                            <label class="form-check-label" for="gridRadios2">
+                              CNC / Other
+                            </label>
+                          </div>
+                          <hr>
+                          <br>
+                          <button type="button" class="btn btn-primary" style="height: 40px; padding-top: 5px;" id="addPartButton">Add Part</button>               
+                        </div>
+                      </fieldset>
+                    </div>
+
+
+                  </div>
+
+                    <!-- Row where the table needs to be-->
+                   <div class="row">
+                    <table class="table table-dark table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <!-- <th scope="col">#</th> -->
+                          <th scope="col">Part Number</th>
+                          <th scope="col">Part Name</th>
+                          <th scope="col">SNP</th>
+                          <th scope="col">Container / SMP</th>
+                          <th scope="col">Yeild Per Cycle</th>
+                          <th scope="col">Cycle Time</th>
+                          <th scope="col">Machine Timee</th>
+                          <th scope="col">Load Time</th>
+                          
+  
+                          <!-- <th scope="col">Time since last</th> -->
+                        </tr>
+                      </thead>
+                      <tbody id="letsgo">
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <!-- <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td>7J299-57551</td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr>
+
+                        <tr>
+                          <td></td>
+                          <td>Stand</td>
+                          <td>150</td>
+                          <td>MB</td>
+                          <td>71</td>
+                          <td>1</td>
+                          <td>33</td>
+                          <td>38</td>
+                        </tr> -->
+  
+                        
+                      </tbody>
+                    </table>
+
+
+                   </div>
+
+                   <!-- ROW 2 -->
+                   <div class="row partrow">
+
+                    <!-- Card -->
+                    <div class="col-md-3 partcard">
+                        <div class="card" style="width: 17rem;">
+                            <img src="../images/Parts/K3411-53202.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">K3411-53202</h5>
+                              <p class="card-text">Mask (Front)</p>
+                              <a href="#" class="btn btn-primary">Part Details / Edit</a>
+                            </div>
+                          </div>
+                    </div>
+
+                   <!-- Card -->
+                   <div class="col-md-3 partcard">
+                    <div class="card" style="width: 17rem;">
+                        <img src="../images/Parts/K3411-54133.PNG" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">K3411-54133</h5>
+                          <p class="card-text">Grill (Bonnet) (Revision 2)</p>
+                          <a href="#" class="btn btn-primary">Part Details / Edit</a>
+                        </div>
+                      </div>
+                </div>
+
+                <!-- Card -->
+                <div class="col-md-3 partcard">
+                    <div class="card" style="width: 17rem;">
+                        <img src="../images/Parts/K3411-81563.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">K3411-81563</h5>
+                          <p class="card-text">Net (Screen)</p>
+                          <a href="#" class="btn btn-primary">Part Details / Edit</a>
+                        </div>
+                      </div>
+                </div>
+
+                <!-- Card -->
+                <div class="col-md-3 partcard">
+                    <div class="card" style="width: 17rem;">
+                        <img src="../images/Parts/K3421-54133.PNG" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">K3421-54133</h5>
+                          <p class="card-text">Grill (Bonnet)</p>
+                          <a href="#" class="btn btn-primary">Part Details / Edit</a>
+                        </div>
+                      </div>
+                </div>
+
+                <!-- Card -->
+                <!-- <div class="col-md-2 partcard">
+                    <div class="card" style="width: 17rem;">
+                        <img src="../images/Parts/K3811-44111.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Lorem ipsum dolor.</p>
+                          <a href="#" class="btn btn-primary">Part Details / Edit</a>
+                        </div>
+                      </div>
+                </div> -->
+
+                   </div>
+
+
+                  <!-- End of table -->
+               </div>
+           </div>
+       </div>
+   </div>
+
+
+
+
+   <script>
+
+
+  // ==============================================================
+  //  Here we have the javascript test for a decreasing progress bar
+  // ==============================================================
+
+  var firebaseConfig = {
+        apiKey: "AIzaSyCNgQru6L-VJT5C9y8Cl47GtVH2DNmo2Yk",
+        authDomain: "part-track-demo.firebaseapp.com",
+        projectId: "part-track-demo",
+        storageBucket: "part-track-demo.appspot.com",
+        messagingSenderId: "497244549101",
+        appId: "1:497244549101:web:afb5f178b7f25ff2dc81e4"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      // Assign database reference to a variable to use
+      var database = firebase.database();
+
+
+  // Capture the on click event from submit
+  $("#addPartButton").on("click", function(){
+    console.log("This works");
+    // $("#letsgo").html("");
+
+
+    // Step one, trim and capture the values from the fields
+    let partNumber = $("#partNumber").val().trim();
+    let partName = $("#partName").val().trim();
+    let SNP = $("#SNP").val().trim();
+    let container = $("#container").val().trim();
+    let cycleTime = $("#cycleTime").val().trim();
+    let quantityPerCycle = $("#quantityPerCycle").val().trim();
+    let machineTime = $("#machineTime").val().trim();
+    let loadTime = $("#loadTime").val().trim();
+
+    console.log(partNumber);
+
+    // $("#letsgo").append(`
+    //   <tr>
+    //     <td>${partNumber}</td>
+    //     <td>${partName}</td>
+    //     <td>${SNP}</td>
+    //     <td>${container}</td>
+    //     <td>${cycleTime}</td>
+    //     <td>${quantityPerCycle}</td>
+    //     <td>${machineTime}</td>
+    //     <td>${loadTime}</td>
+    //   </tr>
+    //   `)
+
+
+    // Step 2 make a local, temporary object for holding part data (see train scheduler)
+    let tempPart = {
+      partnumber: partNumber,
+      partname: partName,
+      snp: SNP,
+      containersize: container,
+      cycletime: cycleTime,
+      quantity: quantityPerCycle,
+      machinetime: machineTime,
+      loadtime: loadTime
+    }
+
+    // Step 3, upload the temp object (see train scheduler) to the database
+    database.ref("/parts").push(tempPart);
+
+    // Step 4, Alert test that a part has been added?
+    // Step 5, reset all field data to blank
+    $("#partNumber").val("");
+    $("#partName").val("");
+    $("#SNP").val("");
+    $("#container").val("");
+    $("#cycleTime").val("");
+    $("#quantityPerCycle").val("");
+    $("#machineTime").val("");
+    $("#loadTime").val("");
+
+    
+
+
+
+    // Step 7, append them all to the table
+
+  })
+
+
+      // Step 6 Make a reference to the firebase such that we can assign them to variables
+      database.ref("/parts").on("child_added", function(snap){
+      console.log(snap.val());
+
+      let snapPartNum = snap.val().partnumber;
+      let snapPartName = snap.val().partname;
+      let snapSnp = snap.val().snp;
+      let snapContainer = snap.val().containersize;
+      let snapCycleTime = snap.val().cycletime;
+      let snapQuantity = snap.val().quantity;
+      let snapMachineTime = snap.val().machinetime;
+      let snapLoadTime = snap.val().loadtime;
+      
+
+
+      $("#letsgo").append(`
+      <tr>
+        <td>${snapPartNum}</td>
+        <td>${snapPartName}</td>
+        <td>${snapSnp}</td>
+        <td>${snapContainer}</td>
+        <td>${snapCycleTime}</td>
+        <td>${snapQuantity}</td>
+        <td>${snapMachineTime}</td>
+        <td>${snapLoadTime}</td>
+      </tr>
+      `)
+
+      
+    })
+
+  var robot1Listener = database.ref("/test/Input")
+
+
+</script>
+
+</body>
+</html>

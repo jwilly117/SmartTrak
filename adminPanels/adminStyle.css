@@ -1,0 +1,65 @@
+body{
+    background-color: rgb(63, 58, 58);
+}
+
+#sidebar{
+    background-color: royalblue;
+    height: 800px;
+}
+
+#outputBox{
+    background-color: rgb(34, 34, 34);
+    height: 1145px;
+}
+.table{
+    margin: 10px;
+}
+th{
+    font-weight: bolder;
+    background-color: rgb(102, 102, 102);
+    border-color: white;
+    border: 2px;
+}
+thead{
+    border-bottom: 50px;
+}
+.card{
+    background-color: grey;
+    margin: 5px;
+}
+.btn{
+    border-radius: 7px;
+}
+
+#dropdownMenuButton2{
+    margin: 5px;
+    padding-top: 5px;
+}
+ #clickForCSV{
+     padding-top: 5px;
+     background-color: teal;
+ }
+
+ #panelTitle{
+     color: white;
+     margin-top: 18px;
+     margin-left: 20px;
+ }
+
+ #active{
+    background-color: rgb(4, 32, 56);
+ }
+
+
+
+ .partrow{
+     margin-top: 15px;
+ }
+
+ .partinput{
+     color: white;
+     background-color: rgb(50, 51, 51);
+     margin-left: 20px;
+     border-radius: 10px;
+     margin-bottom: 10px;
+ }
